@@ -8,7 +8,7 @@ Welcome to **Read-A-Rap: Make It Make S Make learning unforgettable with rhythm
 1. Download or clone this repository. 2. Open `index.html` in your web browse 3. Add your own drum sounds in the sou
 ## Deploying Online
 Push any changes to GitHub (`git add - If using Netlify, your site will auto
-&copy; 2025 Read- M ap: Make It Make Se<!DOCTYPE html>
+&copy; 2025 Read- A Rap: Make It Make Se<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
