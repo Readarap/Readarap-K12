@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read-a-Rap: Make it Make Sense</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --gold: #ffd166;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --beat-1: #ff6b6b;
+            --beat-2: #4ecdc4;
+            --beat-3: #ffd166;
+            --beat-4: #6a0572;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background: rgba(10, 10, 35, 0.95);
+            color: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.7rem 1.2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .hero {
+            background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80') center/cover no-repeat;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(67,97,238,0.85) 0%, rgba(58,12,163,0.85) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        .tagline {
+            color: var(--gold);
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(247, 37, 133, 0.5);
+            margin: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-7px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(247, 37, 133, 0.7);
+            background: #ff0676;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 3px solid var(--gold);
+            color: var(--gold);
+            box-shadow: 0 5px 20px rgba(255, 209, 102, 0.4);
+        }
+
+        .btn-outline:hover {
+            background: var(--gold);
+            color: var(--secondary);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            box-shadow: 0 3px 10px rgba(247, 37, 133, 0.5);
+        }
+
+        section {
+            padding: 6rem 5%;
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 5rem 3rem;
+            margin: 3rem auto;
+            max-width: 1400px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) rotate(2deg);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(255, 209, 102, 0.7);
+        }
+
+        .feature-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            color: #e0e0ff;
+        }
+
+        .grade-levels {
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .grade-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .grade-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            min-width: 220px;
+        }
+
+        .grade-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(247, 37, 133, 0.4);
+        }
+
+        .tools-section {
+            background: rgba(10, 10, 35, 0.95);
+            border-top: 3px solid var(--accent);
+            border-bottom: 3px solid var(--accent);
+            padding: 6rem 0;
+        }
+
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 4rem;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 4rem auto 0;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tool-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .tool-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/cartographer.png');
+            opacity: 0.2;
+        }
+
+        .tool-header h3 {
+            font-size: 2.2rem;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tool-body {
+            padding: 2.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-body p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #e0e0ff;
+        }
+
+        .beatbox-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .beat-pad {
+            background: var(--beat-1);
+            border-radius: 15px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .beat-pad:nth-child(4n+2) {
+            background: var(--beat-2);
+        }
+
+        .beat-pad:nth-child(4n+3) {
+            background: var(--beat-3);
+        }
+
+        .beat-pad:nth-child(4n+4) {
+            background: var(--beat-4);
+        }
+
+        .beat-pad:hover {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
+        .beat-pad.active {
+            transform: scale(0.9);
+            box-shadow: 0 0 25px rgba(255,255,255,0.9);
+            filter: brightness(1.2);
+        }
+
+        .beat-pad::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .beat-pad.active::after {
+            opacity: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .control-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .control-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 7px 15px rgba(58,12,163,0.4);
+        }
+
+        .karaoke-container {
+            background: rgba(0,0,0,0.35);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lyrics {
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            flex-grow: 1;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            overflow-y: auto;
+            max-height: 250px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            position: relative;
+        }
+
+        .current-line {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px rgba(255, 209, 102, 0.8);
+            display: block;
+            margin: 1rem 0;
+            animation: pulseText 1s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .level-system {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 5rem 3rem;
+            margin: 5rem auto;
+            max-width: 1400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .level-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, #3a0ca3, #4cc9f0);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 300px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.4s ease;
+        }
+
+        .level-card:hover {
+            transform: translateY(-15px) rotate(-2deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .level-card:nth-child(2) {
+            background: linear-gradient(135deg, #f72585, #ffd166);
+        }
+
+        .level-card:nth-child(3) {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+        }
+
+        .level-number {
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.2);
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .level-card h3 {
+            font-size: 2rem;
+            margin: 1.5rem 0;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .level-card ul {
+            text-align: left;
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .level-card li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .level-card li::before {
+            content: '🎵';
+            position: absolute;
+            left: 0;
+        }
+
+        .lesson-plans {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 5rem 3rem;
+            margin: 5rem auto;
+            max-width: 1400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .lesson-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .lesson-img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .lesson-img::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+
+        .lesson-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lesson-content {
+            padding: 2rem;
+        }
+
+        .lesson-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--gold);
+        }
+
+        .lesson-content p {
+            margin-bottom: 1.8rem;
+            color: #ddd;
+            min-height: 90px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 6rem auto;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            max-width: 1200px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem;
+            min-width: 250px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-box .number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255, 209, 102, 0.5);
+        }
+
+        .testimonials {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 5rem 3rem;
+            margin: 6rem auto;
+            max-width: 1200px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            position: relative;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: -40px;
+            left: 30px;
+            font-size: 8rem;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .author {
+            font-weight: 800;
+            color: var(--gold);
+            font-size: 1.3rem;
+        }
+
+        .role {
+            font-size: 1.1rem;
+            color: #aaa;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 5rem 5%;
+            text-align: center;
+            border-top: 3px solid var(--accent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-8px) rotate(10deg);
+            box-shadow: 0 10px 20px rgba(247, 37, 133, 0.4);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .newsletter {
+            max-width: 600px;
+            margin: 3rem auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .newsletter input::placeholder {
+            color: #ccc;
+        }
+
+        .newsletter button {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 0 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .newsletter button:hover {
+            background: #ffc233;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.5rem;
+            }
+            
+            nav ul {
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 6rem 5%;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .tools-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tool-card {
+                max-width: 100%;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                display: block;
+                margin: 10px auto;
+                width: 90%;
+            }
+            
+            .btn-outline {
+                margin-top: 20px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Game container for VScript storyline */
+        #game-container {
+            width: 100%;
+            height: 500px;
+            margin: 3rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 3px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-microphone-alt"></i>
+            <span>Read-a-Rap</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Lessons</a></li>
+                <li><a href="#">InCreditBox</a></li>
+                <li><a href="#">StarMaker</a></li>
+                <li><a href="#">Level Up</a></li>
+                <li><a href="#">For Teachers</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>MAKE IT MAKE SENSE</h1>
+            <p class="tagline">Transforming K-12 education through rhythm, rhyme, and rap</p>
+            <p>Curriculum-aligned rap lessons with beat-making and karaoke features to boost literacy and engagement</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn">Start Learning</a>
+                <a href="#" class="btn btn-outline">Teacher Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Curriculum Aligned</h3>
+                <p>All lessons align with K-12 standards in math, science, ELA, and social studies using research-based methods :cite[1]:cite[6]</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3>AI-Powered Raps</h3>
+                <p>Machine learning generates educational raps that adapt to student progress and interests :cite[3]</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-drum"></i>
+                </div>
+                <h3>InCreditBox Beats</h3>
+                <p>Create custom beats to accompany lessons with our beatbox studio</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <h3>StarMaker Karaoke</h3>
+                <p>Rap along with real-time feedback on rhythm and pronunciation</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>Level Up System</h3>
+                <p>Story-driven progression through curriculum milestones</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Real-time Analytics</h3>
+                <p>Track student progress and identify learning gaps instantly</p>
+            </div>
+        </div>
+        
+        <div class="grade-levels">
+            <h3>Curriculum by Grade Level</h3>
+            <div class="grade-buttons">
+                <button class="grade-btn">Elementary (K-5)</button>
+                <button class="grade-btn">Middle School (6-8)</button>
+                <button class="grade-btn">High School (9-12)</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="tools-section">
+        <h2 class="section-title">Interactive Tools</h2>
+        <div class="tools-container">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h3>InCreditBox Beat Maker</h3>
+                </div>
+                <div class="tool-body">
+                    <p>Create custom beats to accompany educational raps. Perfect for rhythm-based learning across subjects!</p>
+                    <div class="beatbox-grid">
+                        <div class="beat-pad">Kick</div>
+                        <div class="beat-pad">Snare</div>
+                        <div class="beat-pad">Hi-Hat</div>
+                        <div class="beat-pad">Clap</div>
+                        <div class="beat-pad">Bass</div>
+                        <div class="beat-pad">Cymbal</div>
+                        <div class="beat-pad">Perc</div>
+                        <div class="beat-pad">Vox</div>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn">Play</button>
+                        <button class="control-btn">Save</button>
+                        <button class="control-btn">Clear</button>
+                        <button class="control-btn">Export</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h3>StarMaker Karaoke</h3>
+                </div>
+                <div class="tool-body">
+                    <p>Rap along with curriculum-aligned tracks. Real-time feedback helps improve fluency and expression!</p>
+                    <div class="karaoke-container">
+                        <div class="lyrics">
+                            <p><span class="current-line">Two plus two is four, that's the math I adore</span><br>
+                            Subtract and divide, let me show you inside<br>
+                            Fractions and decimals, they're no problem at all<br>
+                            With rhythm and flow, watch your knowledge grow tall!<br><br>
+                            Photosynthesis makes the plants grow so green<br>
+                            Sunlight and water create this magic scene<br>
+                            Chlorophyll working, it's a beautiful thing<br>
+                            Nature's own factory where new life will spring!</p>
+                        </div>
+                        <div class="controls">
+                            <button class="control-btn"><i class="fas fa-microphone"></i> Start Recording</button>
+                            <button class="control-btn"><i class="fas fa-play"></i> Playback</button>
+                            <button class="control-btn"><i class="fas fa-award"></i> Earn Points</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="level-system">
+        <h2 class="section-title">Level Up System</h2>
+        <p style="font-size:1.3rem; max-width:800px; margin:0 auto 3rem;">Progress through curriculum milestones with our interactive storyline powered by VScript</p>
+        
+        <div id="game-container">
+            <!-- Phaser game container for VScript storyline -->
+        </div>
+        
+        <div class="level-container">
+            <div class="level-card">
+                <div class="level-number">1</div>
+                <h3>Rhythm Rookie</h3>
+                <p>Master basic math facts through beat patterns</p>
+                <ul>
+                    <li>Addition/Subtraction Beats</li>
+                    <li>Phonics Flow</li>
+                    <li>Science Chants</li>
+                    <li>Earn the Beat Maker Badge</li>
+                </ul>
+            </div>
+            <div class="level-card">
+                <div class="level-number">2</div>
+                <h3>Word Warrior</h3>
+                <p>Tackle vocabulary and reading comprehension</p>
+                <ul>
+                    <li>Vocabulary Verses</li>
+                    <li>Context Clue Rhymes</li>
+                    <li>Literary Devices Flow</li>
+                    <li>Unlock Storytelling Mode</li>
+                </ul>
+            </div>
+            <div class="level-card">
+                <div class="level-number">3</div>
+                <h3>Concept Champion</h3>
+                <p>Advanced STEM concepts through rap battles</p>
+                <ul>
+                    <li>Algebraic Equations</li>
+                    <li>Scientific Method Flow</li>
+                    <li>Historical Narrative Rap</li>
+                    <li>Earn Producer Status</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-plans">
+        <h2 class="section-title">Sample Lesson Plans</h2>
+        <div class="lesson-grid">
+            <div class="lesson-card">
+                <div class="lesson-img" style="background-image: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');">
+                    <div class="lesson-badge">Mathematics</div>
+                </div>
+                <div class="lesson-content">
+                    <h3>Multiplication Tables</h3>
+                    <p>Master times tables through rhythmic chants and beatbox patterns. Students create their own multiplication rap using InCreditBox.</p>
+                    <a href="#" class="btn" style="padding:12px 25px;font-size:1rem;">View Lesson</a>
+                </div>
+            </div>
+            <div class="lesson-card">
+                <div class="lesson-img" style="background-image: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');">
+                    <div class="lesson-badge">Science</div>
+                </div>
+                <div class="lesson-content">
+                    <h3>Photosynthesis Flow</h3>
+                    <p>Rap about how plants make food using sunlight and CO2. Includes StarMaker karaoke challenge with scientific vocabulary.</p>
+                    <a href="#" class="btn" style="padding:12px 25px;font-size:1rem;">View Lesson</a>
+                </div>
+            </div>
+            <div class="lesson-card">
+                <div class="lesson-img" style="background-image: url('https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80');">
+                    <div class="lesson-badge">History</div>
+                </div>
+                <div class="lesson-content">
+                    <h3>Civil Rights Movement</h3>
+                    <p>Explore key figures and events through powerful spoken word. Students create protest raps with historical accuracy.</p>
+                    <a href="#" class="btn" style="padding:12px 25px;font-size:1rem;">View Lesson</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number">92%</div>
+            <div>Engagement Increase</div>
+        </div>
+        <div class="stat-box">
+            <div class="number">250+</div>
+            <div>Curriculum Raps</div>
+        </div>
+        <div class="stat-box">
+            <div class="number">78%</div>
+            <div>Retention Boost</div>
+        </div>
+        <div class="stat-box">
+            <div class="number">50k+</div>
+            <div>Students Reached</div>
+        </div>
+    </div>
+
+    <section class="testimonials">
+        <h2 class="section-title">Success Stories</h2>
+        <div class="testimonial">
+            <p>"My students who struggled with reading are now excited to participate. The combination of rhythm and curriculum content has transformed my classroom! The beat maker tool allows students to create their own learning soundtracks - it's incredible to see them internalize math concepts through music."</p>
+            <div class="author">- Ms. Johnson</div>
+            <div class="role">5th Grade Teacher, Chicago Public Schools</div>
+        </div>
+        <div class="testimonial">
+            <p>"The level-up system with VScript storyline has been a game-changer. Students progress through curriculum milestones like they're completing game levels, completely unaware of how much they're learning in the process. Literacy scores have increased 40% since implementation."</p>
+            <div class="author">- Mr. Rodriguez</div>
+            <div class="role">Literacy Coordinator, NYC District 75 :cite[1]</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">READ-A-<span>RAP</span></div>
+            <p>Transforming literacy and learning through the power of rhythm and rhyme</p>
+            
+            <div class="newsletter">
+                <input type="email" placeholder="Enter your email for updates">
+                <button>Subscribe</button>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Read-a-Rap: Make it Make Sense. Solving literacy through rhythm.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Beat maker functionality
+        const beatPads = document.querySelectorAll('.beat-pad');
+        const sounds = [
+            'sounds/kick.mp3',
+            'sounds/snare.mp3',
+            'sounds/hihat.mp3',
+            'sounds/clap.mp3',
+            'sounds/bass.mp3',
+            'sounds/cymbal.mp3',
+            'sounds/perc.mp3',
+            'sounds/vox.mp3'
+        ];
+        
+        // In a real implementation, we would preload audio files
+        beatPads.forEach((pad, index) => {
+            pad.addEventListener('mousedown', () => {
+                pad.classList.add('active');
+                // This would play the corresponding sound
+                // new Audio(sounds[index]).play();
+                setTimeout(() => {
+                    pad.classList.remove('active');
+                }, 200);
+            });
+        });
+        
+        // Karaoke functionality
+        const recordBtn = document.querySelector('.control-btn:nth-child(1)');
+        const playbackBtn = document.querySelector('.control-btn:nth-child(2)');
+        const lyrics = document.querySelector('.lyrics');
+        const lines = lyrics.querySelectorAll('p')[0].innerHTML.split('<br>');
+        let currentLine = 0;
+        
+        recordBtn.addEventListener('click', () => {
+            if(recordBtn.innerHTML.includes('Start')) {
+                recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+                recordBtn.style.background = 'var(--accent)';
+                startLyricsHighlight();
+            } else {
+                recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                recordBtn.style.background = 'var(--primary)';
+                clearInterval(lyricsInterval);
+            }
+        });
+        
+        playbackBtn.addEventListener('click', () => {
+            playbackBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            setTimeout(() => {
+                playbackBtn.innerHTML = '<i class="fas fa-play"></i> Playback';
+            }, 3000);
+        });
+        
+        function startLyricsHighlight() {
+            currentLine = 0;
+            updateLyricsDisplay();
+            
+            lyricsInterval = setInterval(() => {
+                currentLine = (currentLine + 1) % lines.length;
+                updateLyricsDisplay();
+            }, 5000);
+        }
+        
+        function updateLyricsDisplay() {
+            let content = '';
+            for (let i = 0; i < lines.length; i++) {
+                if (i === currentLine) {
+                    content += `<span class="current-line">${lines[i]}</span><br>`;
+                } else {
+                    content += `${lines[i]}<br>`;
+                }
+            }
+            lyrics.querySelector('p').innerHTML = content;
+        }
+        
+        // Phaser game for VScript storyline
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 500,
+            parent: 'game-container',
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+        
+        const game = new Phaser.Game(config);
+        
+        function preload() {
+            // In a real implementation, we'd load game assets
+            // this.load.image('background', 'images/game-bg.jpg');
+            // this.load.spritesheet('character', 'images/player.png', { frameWidth: 32, frameHeight: 48 });
+        }
+        
+        function create() {
+            // Create game background
+            // this.add.image(400, 250, 'background');
+            
+            // Add storyline text
+            const storyText = this.add.text(400, 150, 'LEVEL UP: RHYTHM QUEST', {
+                fontSize: '36px',
+                fill: '#ffd166',
+                fontFamily: 'Montserrat',
+                stroke: '#000',
+                strokeThickness: 4
+            }).setOrigin(0.5);
+            
+            const instruction = this.add.text(400, 250, 'Complete curriculum challenges to unlock new beats and advance your rap career!', {
+                fontSize: '20px',
+                fill: '#fff',
+                fontFamily: 'Poppins',
+                wordWrap: { width: 600 },
+                align: 'center'
+            }).setOrigin(0.5);
+            
+            const startButton = this.add.rectangle(400, 350, 200, 60, 0x4cc9f0)
+                .setInteractive()
+                .on('pointerdown', () => {
+                    // Start the game
+                });
+                
+            this.add.text(400, 350, 'BEGIN JOURNEY', {
+                fontSize: '24px',
+                fill: '#fff',
+                fontFamily: 'Montserrat'
+            }).setOrigin(0.5);
+        }
+        
+        function update() {
+            // Game update logic
+        }
+        
+        // Animated background
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundPosition = `${x * 100}% ${y * 100}%`;
+        });
+    </script>
+</body>
+</html>
