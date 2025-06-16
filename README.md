@@ -3,7 +3,7 @@ Welcome to **Read-A-Rap: Make It Make S Make learning unforgettable with rhythm
 **Slogan:**
 > Make It Make Sense
 ## Features
-- **Interactive Beatbox**: Tap pads to - **Educational Rap Lyrics**: Scroll th - **Clean, Modern Design**: No clutter- - **Fully Responsive**: Works on deskto
+- **Interactive Beatbox**: Tap pads to - **Educational Rap Lyrics**: Scroll th - **Clean, Modern Design**: No clutter- - **Fully Responsive**: Works on desktop
 ## How to Run Locally
 1. Download or clone this repository. 2. Open `index.html` in your web browse 3. Add your own drum sounds in the sou
 ## Deploying Online
