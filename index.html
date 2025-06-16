@@ -3,57 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReadARap: Make It Make Sense</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Read-A-Rap: Make It Make Sense</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* (keep your original CSS here!) */
+        /* ... all your CSS ... */
+    </style>
 </head>
-<body class="light-theme">
-    <header class="header">
-        <div class="navbar">
-            <a class="navbar-brand" href="#">ReadARap</a>
-            <button id="theme-toggle">Toggle Theme</button>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-microphone-alt"></i>
+            <span>Read-A-Rap: Make It Make Sense</span>
         </div>
+        <div class="slogan" style="font-size:1.2rem; font-weight:600; color:var(--accent); margin-top:0.5rem;">
+            Make It Make Sense
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Lessons</a></li>
+                <li><a href="#">Beat Lab</a></li>
+                <li><a href="#">Rap Along</a></li>
+                <li><a href="#">For Teachers</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
     </header>
-    <div class="container">
-        <h1>Welcome to the Rhythmic Plane</h1>
-        <p>Learn through rap and create your Master Track!</p>
-        
-        <!-- Lesson Selection -->
-        <div id="lesson-selection">
-            <h2>Choose Your Lesson</h2>
-            <select id="subject-select">
-                <option value="math">Math: Fractions Rap</option>
-                <option value="science">Science: Water Cycle Rap</option>
-                <option value="history">History: Civil Rights Rap</option>
-            </select>
-        </div>
-        
-        <!-- Music Creation -->
-        <div id="music-creation">
-            <h2>Create Your Educational Rap</h2>
-            <div id="sound-controls">
-                <button class="sound-btn" data-sound="beat1">Beat 1</button>
-                <button class="sound-btn" data-sound="melody1">Melody 1</button>
-                <button class="sound-btn" data-sound="vocal1">Vocal 1</button>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>READ-A-RAP: MAKE IT MAKE SENSE</h1>
+            <p>Transforming K-12 education with rhythm, rhyme, and beatboxing.<br>
+            <strong>Make It Make Sense</strong></p>
+            <div class="hero-buttons">
+                <a href="#" class="btn">Start Learning</a>
+                <a href="#" class="btn btn-outline">Teacher Resources</a>
             </div>
-            <audio id="audio-beat1" src="assets/sounds/beat1.mp3"></audio>
-            <audio id="audio-melody1" src="assets/sounds/melody1.mp3"></audio>
-            <audio id="audio-vocal1" src="assets/sounds/vocal1.mp3"></audio>
-            <button id="record-vocal">Record Your Rap</button>
-            <button id="play-track">Play Track</button>
-            <button id="stop-track">Stop Track</button>
         </div>
-        
-        <!-- Rhythmic Plane Challenge -->
-        <div id="challenge-area">
-            <h3>Bar Lords Challenge</h3>
-            <p id="challenge-question">Loading challenge...</p>
-            <div id="challenge-options"></div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+            <!-- ... keep the rest as is, but replace "Read the Rap" or "ReadARap" with the new name if you see it ... -->
         </div>
-        
-        <div id="output">Your progress will appear here...</div>
+        <div class="grade-levels">
+            <h3>Browse by Grade Level</h3>
+            <div class="grade-buttons">
+                <button class="grade-btn">Elementary (K-5)</button>
+                <button class="grade-btn">Middle School (6-8)</button>
+                <button class="grade-btn">High School (9-12)</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="tools-section">
+        <h2 class="section-title">Creative Tools</h2>
+        <div class="tools-container">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h3>InCreditBox Beat Maker</h3>
+                </div>
+                <div class="tool-body">
+                    <p>Create your own beats to accompany our educational raps. Perfect for rhythm-based learning!</p>
+                    <div class="beatbox-grid">
+                        <div class="beat-pad">Kick</div>
+                        <div class="beat-pad">Snare</div>
+                        <div class="beat-pad">Hi-Hat</div>
+                        <div class="beat-pad">Clap</div>
+                        <div class="beat-pad">Bass</div>
+                        <div class="beat-pad">Cymbal</div>
+                        <div class="beat-pad">Perc</div>
+                        <div class="beat-pad">Vox</div>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn">Play Beat</button>
+                        <button class="control-btn">Save</button>
+                        <button class="control-btn">Clear</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h3>StarMaker Karaoke</h3>
+                </div>
+                <div class="tool-body">
+                    <p>Rap along with our educational tracks. Perfect for practicing fluency and expression!</p>
+                    <div class="karaoke-container">
+                        <div class="lyrics">
+                            <p><span class="current-line">Two plus two is four, that's the math I adore</span><br>
+                            Subtract and divide, let me show you inside<br>
+                            Fractions and decimals, they're no problem at all<br>
+                            With rhythm and flow, watch your knowledge grow tall!</p>
+                        </div>
+                        <div class="controls">
+                            <button class="control-btn"><i class="fas fa-microphone"></i> Start Recording</button>
+                            <button class="control-btn"><i class="fas fa-play"></i> Playback</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-plans">
+        <h2 class="section-title">Sample Lesson Plans</h2>
+        <div class="lesson-grid">
+            <!-- ... lesson cards as before ... -->
+        </div>
+    </section>
+
+    <div class="stats">
+        <!-- ... stats as before ... -->
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
-    <script src="https://cdn.interactjs.io/v1.10.11/interactjs/index.js"></script>
-    <script src="script.js"></script>
+
+    <section class="testimonials">
+        <h2 class="section-title">What Teachers Say</h2>
+        <!-- ... testimonials ... -->
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-microphone-alt"></i>
+                <span>Read-A-Rap: Make It Make Sense</span>
+            </div>
+            <p>Transforming literacy and learning through the power of rhythm and rhyme</p>
+            <div class="slogan" style="font-size:1.1rem; color:var(--accent); font-weight:600; margin-top:0.5rem;">
+                Make It Make Sense
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Read-A-Rap: Make It Make Sense. All rights reserved. Solving literacy through rhythm.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // (keep all your JavaScript as before)
+    </script>
 </body>
-</html>s
+</html>
