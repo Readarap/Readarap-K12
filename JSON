@@ -1,0 +1,7 @@
+{
+    "title": "Fractions Rap",
+    "lyric": "Half and a quarter, add 'em up, don't falter...",
+    "question": "What is 1/2 + 1/4?",
+    "options": ["3/4", "1/2", "1", "2/4"],
+    "correct": "3/4"
+}

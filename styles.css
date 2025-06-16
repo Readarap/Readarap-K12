@@ -1,0 +1,76 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.light-theme {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.header {
+    background-color: #ff4d4d;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+    background-image: url('assets/images/background.jpg');
+    background-size: cover;
+}
+
+.sound-btn, #play-track, #stop-track, #record-vocal, .challenge-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    background-color: #ff4d4d;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.sound-btn:hover, #play-track:hover, #stop-track:hover, #record-vocal:hover, .challenge-btn:hover {
+    background-color: #cc0000;
+}
+
+#theme-toggle {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#music-creation, #challenge-area, #lesson-selection {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#subject-select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}

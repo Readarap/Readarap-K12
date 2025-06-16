@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadARap: Make It Make Sense</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme">
+    <header class="header">
+        <div class="navbar">
+            <a class="navbar-brand" href="#">ReadARap</a>
+            <button id="theme-toggle">Toggle Theme</button>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Welcome to the Rhythmic Plane</h1>
+        <p>Learn through rap and create your Master Track!</p>
+        
+        <!-- Lesson Selection -->
+        <div id="lesson-selection">
+            <h2>Choose Your Lesson</h2>
+            <select id="subject-select">
+                <option value="math">Math: Fractions Rap</option>
+                <option value="science">Science: Water Cycle Rap</option>
+                <option value="history">History: Civil Rights Rap</option>
+            </select>
+        </div>
+        
+        <!-- Music Creation -->
+        <div id="music-creation">
+            <h2>Create Your Educational Rap</h2>
+            <div id="sound-controls">
+                <button class="sound-btn" data-sound="beat1">Beat 1</button>
+                <button class="sound-btn" data-sound="melody1">Melody 1</button>
+                <button class="sound-btn" data-sound="vocal1">Vocal 1</button>
+            </div>
+            <audio id="audio-beat1" src="assets/sounds/beat1.mp3"></audio>
+            <audio id="audio-melody1" src="assets/sounds/melody1.mp3"></audio>
+            <audio id="audio-vocal1" src="assets/sounds/vocal1.mp3"></audio>
+            <button id="record-vocal">Record Your Rap</button>
+            <button id="play-track">Play Track</button>
+            <button id="stop-track">Stop Track</button>
+        </div>
+        
+        <!-- Rhythmic Plane Challenge -->
+        <div id="challenge-area">
+            <h3>Bar Lords Challenge</h3>
+            <p id="challenge-question">Loading challenge...</p>
+            <div id="challenge-options"></div>
+        </div>
+        
+        <div id="output">Your progress will appear here...</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <script src="https://cdn.interactjs.io/v1.10.11/interactjs/index.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>s
